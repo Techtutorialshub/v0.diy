@@ -6,12 +6,6 @@ export async function GET(request: Request) {
   const redirectUrl = url.searchParams.get("redirectUrl");
 
   await signIn("guest", {
-    redirect: false,
+    redirectTo: redirectUrl || "/",
   });
-
-  if (redirectUrl) {
-    redirect(redirectUrl);
-  }
-
-  redirect("/");
 }
