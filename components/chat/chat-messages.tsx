@@ -34,10 +34,11 @@ interface ChatMessagesProps {
 export function ChatMessages({
   chatHistory,
   isLoading,
+  currentChat: _currentChat,
   onStreamingComplete,
   onChatData,
   onStreamingStarted,
-}: Omit<ChatMessagesProps, "currentChat">) {
+}: ChatMessagesProps) {
   const streamingStartedRef = useRef(false);
 
   // Reset the streaming started flag when a new message starts loading

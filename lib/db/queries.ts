@@ -12,6 +12,9 @@ import {
 import { generateHashedPassword } from "./utils";
 
 export async function getUser(email: string): Promise<User[]> {
+  if (!db) {
+    throw new Error("Database connection is not available.");
+  }
   try {
     return await db.select().from(users).where(eq(users.email, email));
   } catch (error) {
@@ -24,6 +27,9 @@ export async function createUser(
   email: string,
   password: string,
 ): Promise<User[]> {
+  if (!db) {
+    throw new Error("Database connection is not available.");
+  }
   try {
     const hashedPassword = generateHashedPassword(password);
     return await db
@@ -40,6 +46,9 @@ export async function createUser(
 }
 
 export async function createGuestUser(): Promise<User[]> {
+  if (!db) {
+    throw new Error("Database connection is not available.");
+  }
   try {
     const guestId = generateUUID();
     const guestEmail = `guest-${guestId}@example.com`;
@@ -65,6 +74,9 @@ export async function createChatOwnership({
   v0ChatId: string;
   userId: string;
 }) {
+  if (!db) {
+    throw new Error("Database connection is not available.");
+  }
   try {
     return await db
       .insert(chat_ownerships)
@@ -80,6 +92,9 @@ export async function createChatOwnership({
 }
 
 export async function getChatOwnership({ v0ChatId }: { v0ChatId: string }) {
+  if (!db) {
+    throw new Error("Database connection is not available.");
+  }
   try {
     const [ownership] = await db
       .select()
@@ -97,6 +112,9 @@ export async function getChatIdsByUserId({
 }: {
   userId: string;
 }): Promise<string[]> {
+  if (!db) {
+    throw new Error("Database connection is not available.");
+  }
   try {
     const ownerships = await db
       .select({ v0ChatId: chat_ownerships.v0_chat_id })
@@ -112,6 +130,9 @@ export async function getChatIdsByUserId({
 }
 
 export async function deleteChatOwnership({ v0ChatId }: { v0ChatId: string }) {
+  if (!db) {
+    throw new Error("Database connection is not available.");
+  }
   try {
     return await db
       .delete(chat_ownerships)
@@ -130,6 +151,9 @@ export async function getChatCountByUserId({
   userId: string;
   differenceInHours: number;
 }): Promise<number> {
+  if (!db) {
+    throw new Error("Database connection is not available.");
+  }
   try {
     const hoursAgo = new Date(Date.now() - differenceInHours * 60 * 60 * 1000);
 
@@ -157,6 +181,9 @@ export async function getChatCountByIP({
   ipAddress: string;
   differenceInHours: number;
 }): Promise<number> {
+  if (!db) {
+    throw new Error("Database connection is not available.");
+  }
   try {
     const hoursAgo = new Date(Date.now() - differenceInHours * 60 * 60 * 1000);
 
@@ -184,6 +211,9 @@ export async function createAnonymousChatLog({
   ipAddress: string;
   v0ChatId: string;
 }) {
+  if (!db) {
+    throw new Error("Database connection is not available.");
+  }
   try {
     return await db.insert(anonymous_chat_logs).values({
       ip_address: ipAddress,
